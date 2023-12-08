@@ -4,64 +4,73 @@ import { View, Text, TextInput, Switch, FlatList, StyleSheet, TouchableOpacity }
 const TodoApp = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const [error, setError] = useState('');
 
   const addTask = () => {
-    if (newTask.trim() !== '') {
-      setTasks([...tasks, { id: Date.now(), text: newTask, enabled: true }]);
-      setNewTask('');
+    if (newTask.trim() === '') {
+      setError('Please enter a task name.');
+      return;
     }
+  
+    const newId = tasks.length; 
+    setTasks([...tasks, { id: newId, name: newTask, isComplete: false }]);
+    setNewTask(''); 
+    setError(''); 
   };
 
-  const toggleTask = (id) => {
+  const changeStatus = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, enabled: !task.enabled } : task
+        task.id === id ? { ...task, isComplete: !task.isComplete } : task
       )
     );
   };
-
+  
   const clearAllTasks = () => {
     setTasks([]);
   };
 
   const renderItem = ({ item }) => (
     <View style={styles.taskItem}>
-      <Text style={item.enabled ? styles.pendingText : styles.doneText}>{item.text}</Text>
+      <View style={styles.taskTextContainer}>
+        <Text style={styles.taskLabel}>{item.id} - {item.name}</Text>
+        <Text style={item.isComplete ? styles.taskComplete : styles.taskPending}>
+          {item.isComplete ? 'COMPLETE' : 'PENDING'}
+        </Text>
+      </View>
       <Switch
-        value={item.enabled}
-        onValueChange={() => toggleTask(item.id)}
-        style={styles.switch}
+        value={item.isComplete}
+        onValueChange={() => changeStatus(item.id)}
       />
     </View>
   );
-
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Todo App</Text>
-
-      {tasks.length > 0 ? (
-        <FlatList
-        style={{paddingHorizontal:20}}
-          data={tasks}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      ) : (
-        <Text style={{ textAlign: 'center', marginBottom: 20, fontWeight: 'bold' }}>No pending tasks</Text>
-      )}
-
+      <Text style={styles.header}>Todo List</Text>
+      <FlatList
+        data={tasks}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        ListEmptyComponent={
+          <Text style={styles.noTasks}>No Pending Tasks</Text>
+        }
+      />
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="New Task"
           value={newTask}
-          onChangeText={(text) => setNewTask(text)}
+          onChangeText={setNewTask}
         />
-        <TouchableOpacity onPress={addTask} style={styles.addButton}>
-          <Text>Add</Text>
+        {error !== '' && <Text style={styles.error}>{error}</Text>}
+        <TouchableOpacity 
+          onPress={addTask} 
+          style={styles.addButton}
+        >
+          <Text style={styles.buttonText}>ADD TASK</Text>
         </TouchableOpacity>
       </View>
-
       {tasks.length > 0 && (
         <TouchableOpacity onPress={clearAllTasks} style={styles.clearButton}>
           <Text style={styles.clearButtonText}>Clear All</Text>
@@ -74,7 +83,8 @@ const TodoApp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50
+    marginTop: 50,
+    backgroundColor: '#fff'
   },
   header: {
     fontSize: 24,
@@ -88,33 +98,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    padding: 10,
     borderBottomColor: '#e2e2e2',
     borderBottomWidth: 1
   },
-  pendingText: {
+  taskTextContainer: {
+    flexDirection: 'column'
+  },
+  taskLabel: {
     fontSize: 18,
   },
-  doneText: {
-    fontSize: 18,
-    textDecorationLine: 'line-through',
+  taskComplete: {
+    color: 'green'
   },
-  toggleButton: {
-    backgroundColor: '#e0e0e0',
-    padding: 5,
-    borderRadius: 5,
+  taskPending: {
+    color: 'red'
+  },
+  noTasks: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
   },
   inputContainer: {
-    paddingHorizontal:20,
     flexDirection: 'row',
+    paddingHorizontal: 20,
     marginBottom: 20,
   },
   input: {
     flex: 1,
     height: 40,
     borderWidth: 1,
+    borderColor: '#ccc',
     marginRight: 10,
     paddingHorizontal: 10,
+    borderRadius: 5
   },
   addButton: {
     backgroundColor: '#4caf50',
@@ -123,22 +140,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16
+  },
   clearButton: {
-    marginHorizontal:20,
-    marginBottom:10,
     backgroundColor: '#f44336',
     padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
+    borderRadius: 5,
+    justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 20,
+    marginTop: 20
   },
   clearButtonText: {
-    color: 'white',
-    fontSize: 18,
+    color: '#fff',
+    fontSize: 16
   },
-  switch: {
-    marginLeft: 10,
-  }
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    padding: 5
+  },
 });
 
 export default TodoApp;
