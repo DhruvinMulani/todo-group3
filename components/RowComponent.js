@@ -1,4 +1,5 @@
 import { View, Text, Switch, StyleSheet } from "react-native";
+import CustomHook from "../CustomHook";
 // import { useState } from "react";
 
 // import useCustomHook from '../useCustomHook';
@@ -19,7 +20,11 @@ const RowComponent = ( props ) => {
 //     );
 //   };
 
+  const {todoCompletionValue, toggle} = CustomHook(false);
     
+  const buttonPressed = (id) => {
+    toggle(id)
+  }
 
   return (
     <View style={styles.taskItem}>
@@ -29,15 +34,15 @@ const RowComponent = ( props ) => {
         </Text>
 
         <Text
-          style={props.item.isComplete ? styles.taskComplete : styles.taskPending}
+          style={todoCompletionValue ? styles.taskComplete : styles.taskPending}
         >
-          {props.item.isComplete ? "COMPLETE" : "PENDING"}
+          {todoCompletionValue ? "COMPLETE" : "PENDING"}
         </Text>
       </View>
       
       <Switch
-        value={props.item.isComplete}
-        onValueChange={() => changeStatus(props.item.id)}
+        value={todoCompletionValue}
+        onValueChange={() => buttonPressed(props.item.id)}
       />
     </View>
   );
