@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Switch, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import RowComponent from './components/RowComponent';
 
 const TodoApp = () => {
   const [tasks, setTasks] = useState([]);
@@ -18,32 +19,18 @@ const TodoApp = () => {
     setError(''); 
   };
 
-  const changeStatus = (id) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, isComplete: !task.isComplete } : task
-      )
-    );
-  };
+  // const changeStatus = (id) => {
+  //   setTasks((prevTasks) =>
+  //     prevTasks.map((task) =>
+  //       task.id === id ? { ...task, isComplete: !task.isComplete } : task
+  //     )
+  //   );
+  // };
   
   const clearAllTasks = () => {
     setTasks([]);
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.taskItem}>
-      <View style={styles.taskTextContainer}>
-        <Text style={styles.taskLabel}>{item.id} - {item.name}</Text>
-        <Text style={item.isComplete ? styles.taskComplete : styles.taskPending}>
-          {item.isComplete ? 'COMPLETE' : 'PENDING'}
-        </Text>
-      </View>
-      <Switch
-        value={item.isComplete}
-        onValueChange={() => changeStatus(item.id)}
-      />
-    </View>
-  );
   
   return (
     <View style={styles.container}>
@@ -51,7 +38,9 @@ const TodoApp = () => {
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
+        renderItem={({item})=>{
+          return (<RowComponent item = {item}/>)
+          }}
         ListEmptyComponent={
           <Text style={styles.noTasks}>No Pending Tasks</Text>
         }
@@ -93,26 +82,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 10,
     backgroundColor: '#c2c2c2'
-  },
-  taskItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomColor: '#e2e2e2',
-    borderBottomWidth: 1
-  },
-  taskTextContainer: {
-    flexDirection: 'column'
-  },
-  taskLabel: {
-    fontSize: 18,
-  },
-  taskComplete: {
-    color: 'green'
-  },
-  taskPending: {
-    color: 'red'
   },
   noTasks: {
     textAlign: 'center',
