@@ -1,45 +1,26 @@
 import { View, Text, Switch, StyleSheet } from "react-native";
 import CustomHook from "../CustomHook";
-// import { useState } from "react";
 
-// import useCustomHook from '../useCustomHook';
+const RowComponent = (props) => {
+  const { todoCompletionValue, toggle } = CustomHook(false);
 
-const RowComponent = ( props ) => {
-//   const MyHook = useCustomHook("some random text here");
-//   const btnPressed = () => {
-//     // call the hook's function
-//     MyHook.someFunction();
-//   };
-
-
-//   const changeStatus = (id) => {
-//     setTasks((prevTasks) =>
-//       prevTasks.map((task) =>
-//         task.id === id ? { ...task, isComplete: !task.isComplete } : task
-//       )
-//     );
-//   };
-
-  const {todoCompletionValue, toggle} = CustomHook(false);
-    
   const buttonPressed = (id) => {
-    toggle(id)
-  }
+    toggle(id);
+  };
 
   return (
     <View style={styles.taskItem}>
-      < View style={styles.taskTextContainer}>
+      
+      <View style={styles.taskTextContainer}>
         <Text style={styles.taskLabel}>
           {props.item.id} - {props.item.name}
         </Text>
-
-        <Text
-          style={todoCompletionValue ? styles.taskComplete : styles.taskPending}
-        >
+       
+        <Text style={todoCompletionValue ? styles.taskComplete : styles.taskPending}>
           {todoCompletionValue ? "COMPLETE" : "PENDING"}
         </Text>
       </View>
-      
+
       <Switch
         value={todoCompletionValue}
         onValueChange={() => buttonPressed(props.item.id)}

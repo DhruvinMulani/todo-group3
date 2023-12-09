@@ -1,46 +1,44 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import RowComponent from './components/RowComponent';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import RowComponent from "./components/RowComponent";
 
 const TodoApp = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
-  const [error, setError] = useState('');
+  const [newTask, setNewTask] = useState("");
+  const [error, setError] = useState("");
 
   const addTask = () => {
-    if (newTask.trim() === '') {
-      setError('Please enter a task name.');
+    if (newTask.trim() === "") {
+      setError("Please enter a task name.");
       return;
     }
-  
-    const newId = tasks.length; 
+
+    const newId = tasks.length;
     setTasks([...tasks, { id: newId, name: newTask, isComplete: false }]);
-    setNewTask(''); 
-    setError(''); 
+    setNewTask("");
+    setError("");
   };
 
-  // const changeStatus = (id) => {
-  //   setTasks((prevTasks) =>
-  //     prevTasks.map((task) =>
-  //       task.id === id ? { ...task, isComplete: !task.isComplete } : task
-  //     )
-  //   );
-  // };
-  
   const clearAllTasks = () => {
     setTasks([]);
   };
 
-  
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Todo List</Text>
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({item})=>{
-          return (<RowComponent item = {item}/>)
-          }}
+        renderItem={({ item }) => {
+          return <RowComponent item={item} />;
+        }}
         ListEmptyComponent={
           <Text style={styles.noTasks}>No Pending Tasks</Text>
         }
@@ -52,11 +50,8 @@ const TodoApp = () => {
           value={newTask}
           onChangeText={setNewTask}
         />
-        {error !== '' && <Text style={styles.error}>{error}</Text>}
-        <TouchableOpacity 
-          onPress={addTask} 
-          style={styles.addButton}
-        >
+        {error !== "" && <Text style={styles.error}>{error}</Text>}
+        <TouchableOpacity onPress={addTask} style={styles.addButton}>
           <Text style={styles.buttonText}>ADD TASK</Text>
         </TouchableOpacity>
       </View>
@@ -73,23 +68,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 50,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 10,
-    backgroundColor: '#c2c2c2'
+    backgroundColor: "#c2c2c2",
   },
   noTasks: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 20,
     fontSize: 16,
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 20,
     marginBottom: 20,
   },
@@ -97,39 +92,39 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     marginRight: 10,
     paddingHorizontal: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   addButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: "#4caf50",
     padding: 10,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16
+    color: "#fff",
+    fontSize: 16,
   },
   clearButton: {
-    backgroundColor: '#f44336',
+    backgroundColor: "#f44336",
     padding: 15,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginHorizontal: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   clearButtonText: {
-    color: '#fff',
-    fontSize: 16
+    color: "#fff",
+    fontSize: 16,
   },
   error: {
-    color: 'red',
-    textAlign: 'center',
-    padding: 5
+    color: "red",
+    textAlign: "center",
+    padding: 5,
   },
 });
 
