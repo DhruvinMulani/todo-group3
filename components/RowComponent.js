@@ -17,7 +17,7 @@ const RowComponent = (props) => {
         </Text>
        
         <Text style={todoCompletionValue ? styles.taskComplete : styles.taskPending}>
-          {todoCompletionValue ? "COMPLETE" : "PENDING"}
+          {todoCompletionValue ? "FINISHED" : "PENDING"}
         </Text>
       </View>
 
