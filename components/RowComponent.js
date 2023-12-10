@@ -14,7 +14,7 @@ const RowComponent = (props) => {
       <View style={styles.taskTextContainer}>
         <Text style={styles.taskLabel}>
           {props.item.id} - {props.item.name}
-        </Text>
+        </Text> 
        
         <Text style={todoCompletionValue ? styles.taskComplete : styles.taskPending}>
           {todoCompletionValue ? "FINISHED" : "PENDING"}
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   taskComplete: {
-    color: "green",
+    color: "grey",
   },
   taskPending: {
     color: "red",
