@@ -33,6 +33,9 @@ const TodoApp = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Todo List</Text>
+      {tasks.length === 0 && <Text style={styles.noTasksText} testID="noTasksText">
+        You have no tasks.
+      </Text>}
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id.toString()}
@@ -40,8 +43,9 @@ const TodoApp = () => {
           return <RowComponent item={item} />;
         }}
         ListEmptyComponent={
-          <Text style={styles.noTasks}>No Pending Tasks</Text>
+          <Text style={styles.noTasks}>You have no tasks.</Text>
         }
+        testID="taskList"
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -49,14 +53,15 @@ const TodoApp = () => {
           placeholder="New Task"
           value={newTask}
           onChangeText={setNewTask}
+          testID="taskInputText"
         />
         {error !== "" && <Text style={styles.error}>{error}</Text>}
-        <TouchableOpacity onPress={addTask} style={styles.addButton}>
+        <TouchableOpacity onPress={addTask} style={styles.addButton} testID="addButton">
           <Text style={styles.buttonText}>ADD TASK</Text>
         </TouchableOpacity>
       </View>
       {tasks.length > 0 && (
-        <TouchableOpacity onPress={clearAllTasks} style={styles.clearButton}>
+        <TouchableOpacity onPress={clearAllTasks} style={styles.clearButton} testID="clearAllButton">
           <Text style={styles.clearButtonText}>Clear All</Text>
         </TouchableOpacity>
       )}
